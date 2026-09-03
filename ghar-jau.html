@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ghar Jau — Get home safe, with your own car</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,450;9..144,560;9..144,650&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night: #0E1330;
+    --night-2: #171F45;
+    --night-3: #222c58;
+    --marigold: #F2A93B;
+    --marigold-dim: #c98a3e;
+    --ember: #E2703A;
+    --ivory: #F6F1E4;
+    --mist: rgba(246,241,228,0.62);
+    --mist-dim: rgba(246,241,228,0.38);
+    --sage: #6FA98A;
+    --sage-dim: rgba(111,169,138,0.16);
+    --hair: rgba(246,241,228,0.12);
+    --radius-lg: 28px;
+    --radius-sm: 6px;
+    --maxw: 1120px;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--night);
+    color: var(--ivory);
+    font-family: 'Manrope', sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3{
+    font-family: 'Fraunces', serif;
+    font-weight: 560;
+    line-height: 1.08;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  p{ margin: 0; }
+  a{ color: inherit; }
+  img,svg{ display:block; max-width:100%; }
+  .wrap{ max-width: var(--maxw); margin: 0 auto; padding: 0 32px; }
+  ::selection{ background: var(--marigold); color: var(--night); }
+  :focus-visible{ outline: 2px solid var(--marigold); outline-offset: 3px; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position: sticky; top:0; z-index: 50;
+    backdrop-filter: blur(10px);
+    background: rgba(14,19,48,0.82);
+    border-bottom: 1px solid var(--hair);
+  }
+  nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height: 76px;
+  }
+  .logo{
+    display:flex; align-items:baseline; gap:8px;
+    font-family:'Fraunces', serif; font-size: 22px; font-weight:650;
+    text-decoration:none; color: var(--ivory);
+  }
+  .logo .dot{ color: var(--marigold); }
+  .navlinks{ display:flex; align-items:center; gap: 36px; }
+  .navlinks a{
+    text-decoration:none; color: var(--mist); font-size: 15px; font-weight:500;
+    transition: color .18s ease;
+  }
+  .navlinks a:hover{ color: var(--ivory); }
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    padding: 12px 24px;
+    border-radius: 100px;
+    font-weight: 700; font-size: 15px;
+    text-decoration:none;
+    cursor:pointer; border:none;
+    transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+  }
+  .btn-primary{
+    background: var(--marigold); color: var(--night);
+    box-shadow: 0 0 0 0 rgba(242,169,59,0.5);
+  }
+  .btn-primary:hover{ background: #ffc063; transform: translateY(-1px); box-shadow: 0 8px 24px -8px rgba(242,169,59,0.6); }
+  .btn-ghost{
+    background: transparent; color: var(--ivory);
+    border: 1px solid var(--hair);
+  }
+  .btn-ghost:hover{ border-color: var(--marigold); color: var(--marigold); }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding: 88px 0 60px;
+    overflow: hidden;
+  }
+  .hero-glow{
+    position:absolute; top:-180px; right:-160px; width:560px; height:560px;
+    background: radial-gradient(circle, rgba(242,169,59,0.16), transparent 65%);
+    pointer-events:none;
+  }
+  .hero-grid{
+    display:grid; grid-template-columns: 1.05fr 0.95fr; gap: 40px; align-items:center;
+    position:relative;
+  }
+  .kicker{
+    display:inline-flex; align-items:center; gap:10px;
+    color: var(--marigold); font-weight:700; font-size: 14px;
+    margin-bottom: 22px;
+  }
+  .kicker::before{
+    content:''; width:8px; height:8px; border-radius:50%;
+    background: var(--marigold);
+    box-shadow: 0 0 0 4px rgba(242,169,59,0.18);
+  }
+  h1.headline{
+    font-size: clamp(38px, 5vw, 60px);
+    max-width: 12ch;
+  }
+  h1.headline em{
+    font-style: italic; color: var(--marigold); font-weight: 450;
+  }
+  .hero-sub{
+    margin-top: 22px;
+    font-size: 18px;
+    color: var(--mist);
+    max-width: 46ch;
+  }
+  .hero-actions{ display:flex; gap:16px; margin-top: 34px; flex-wrap:wrap; }
+  .hero-note{
+    margin-top: 26px; font-size: 14px; color: var(--mist-dim);
+  }
+
+  /* route illustration */
+  .route-card{
+    position:relative;
+    background: linear-gradient(165deg, var(--night-2), var(--night-3));
+    border: 1px solid var(--hair);
+    border-radius: var(--radius-lg);
+    padding: 34px 30px 30px;
+    min-height: 420px;
+  }
+  .route-card .cap{
+    font-size:13px; color: var(--mist-dim); font-weight:600; margin-bottom: 4px;
+  }
+  .route-card .pair{
+    display:flex; justify-content:space-between; font-size: 14px; color: var(--mist);
+    margin-bottom: 18px;
+  }
+  .route-svg{ width:100%; height: 300px; }
+  .route-path{
+    fill:none; stroke: var(--marigold); stroke-width:2.5; stroke-dasharray: 7 8;
+    stroke-linecap: round;
+    stroke-dashoffset: 0;
+    animation: dash 22s linear infinite;
+  }
+  @keyframes dash{ to{ stroke-dashoffset: -300; } }
+  .pin-label{ font-family:'Manrope',sans-serif; font-size: 12.5px; fill: var(--mist); font-weight:600; }
+  .pin-sub{ font-family:'Manrope',sans-serif; font-size: 10.5px; fill: var(--mist-dim); }
+
+  /* ---------- MARQUEE STRIP ---------- */
+  .strip{
+    border-top: 1px solid var(--hair);
+    border-bottom: 1px solid var(--hair);
+    padding: 22px 0;
+  }
+  .strip .wrap{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap: 18px;
+  }
+  .strip-item{
+    font-size: 14px; color: var(--mist-dim); font-weight:600;
+  }
+  .strip-item b{ color: var(--ivory); font-weight:700; }
+
+  /* ---------- SECTION HEADS ---------- */
+  section{ padding: 100px 0; }
+  .section-head{ max-width: 640px; margin-bottom: 56px; }
+  .section-head .tag{
+    color: var(--marigold); font-weight:700; font-size:14px; margin-bottom: 14px; display:block;
+  }
+  .section-head h2{ font-size: clamp(28px, 3.4vw, 40px); }
+  .section-head p{ margin-top: 16px; color: var(--mist); font-size: 17px; max-width: 52ch; }
+
+  /* ---------- DIFFERENCE (comparison) ---------- */
+  .compare{
+    display:grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  }
+  .compare-card{
+    border-radius: var(--radius-sm);
+    padding: 32px 28px;
+    border: 1px solid var(--hair);
+  }
+  .compare-card.old{ background: transparent; }
+  .compare-card.new{
+    background: linear-gradient(160deg, rgba(242,169,59,0.1), transparent 60%), var(--night-2);
+    border-color: rgba(242,169,59,0.35);
+  }
+  .compare-card h3{ font-size: 20px; margin-bottom: 18px; color: var(--mist); font-weight:500; font-family:'Manrope',sans-serif; }
+  .compare-card.new h3{ color: var(--marigold); font-weight:700; }
+  .compare-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px; }
+  .compare-list li{
+    display:flex; gap: 12px; font-size:15px; color: var(--mist);
+  }
+  .compare-card.new .compare-list li{ color: var(--ivory); }
+  .mark{ flex-shrink:0; width:18px; }
+
+  /* ---------- HOW IT WORKS — route timeline ---------- */
+  .timeline{
+    position:relative;
+    display:flex; flex-direction:column; gap: 0;
+  }
+  .timeline::before{
+    content:'';
+    position:absolute; left: 27px; top: 14px; bottom: 14px; width: 2px;
+    background-image: linear-gradient(var(--hair) 60%, transparent 0%);
+    background-size: 2px 14px;
+    background-repeat: repeat-y;
+  }
+  .tl-step{
+    position:relative; display:grid; grid-template-columns: 56px 1fr; gap: 22px;
+    padding-bottom: 52px;
+  }
+  .tl-step:last-child{ padding-bottom:0; }
+  .tl-node{
+    width: 56px; height:56px; border-radius:50%;
+    background: var(--night-2); border: 1px solid var(--hair);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-size:20px; color: var(--marigold);
+    z-index:1;
+  }
+  .tl-step.active .tl-node{
+    background: var(--marigold); color: var(--night); border-color: var(--marigold);
+  }
+  .tl-body h3{ font-size: 21px; margin-bottom:8px; }
+  .tl-body p{ color: var(--mist); font-size:15.5px; max-width: 54ch; }
+  .tl-time{ font-size: 13px; color: var(--mist-dim); margin-top:8px; font-weight:600; }
+
+  /* ---------- TRUST GRID ---------- */
+  .trust-grid{
+    display:grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+  }
+  .trust-card{
+    padding: 28px 22px;
+    border: 1px solid var(--hair);
+    border-radius: var(--radius-sm);
+    background: var(--night-2);
+  }
+  .trust-card:nth-child(2){ border-radius: 20px 6px 20px 6px; }
+  .trust-card:nth-child(3){ border-radius: 6px 20px 6px 20px; }
+  .trust-icon{
+    width: 40px; height:40px; margin-bottom: 18px;
+  }
+  .trust-card h3{ font-size:17px; font-weight:700; font-family:'Manrope',sans-serif; margin-bottom:8px; }
+  .trust-card p{ color: var(--mist); font-size: 14.5px; }
+  .badge-sage{
+    display:inline-flex; align-items:center; gap:6px;
+    background: var(--sage-dim); color: var(--sage);
+    font-size:12px; font-weight:700; padding: 5px 10px; border-radius: 100px;
+    margin-top:14px;
+  }
+  .badge-sage::before{ content:'✓'; }
+
+  /* ---------- COVERAGE ---------- */
+  .coverage{
+    display:grid; grid-template-columns: 0.9fr 1.1fr; gap: 56px; align-items:center;
+  }
+  .coverage-tags{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 24px; }
+  .ctag{
+    border:1px solid var(--hair); padding: 8px 16px; border-radius:100px;
+    font-size: 13.5px; color: var(--mist);
+  }
+  .map-card{
+    border: 1px solid var(--hair); border-radius: var(--radius-lg);
+    background: var(--night-2);
+    padding: 30px;
+    position:relative;
+    min-height: 380px;
+  }
+  .map-pin{ position:absolute; }
+  .map-pin .pt{
+    width:10px; height:10px; border-radius:50%; background: var(--marigold);
+    box-shadow: 0 0 0 5px rgba(242,169,59,0.16);
+  }
+  .map-pin span{
+    display:block; font-size: 12px; color: var(--mist); margin-top:6px; white-space:nowrap;
+  }
+
+  /* ---------- QUOTE ---------- */
+  .quote-band{
+    border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair);
+    padding: 90px 0;
+  }
+  .quote-band blockquote{
+    font-family:'Fraunces',serif; font-weight:450; font-style:italic;
+    font-size: clamp(24px, 3vw, 34px);
+    max-width: 780px; margin: 0 auto; text-align:center;
+    color: var(--ivory);
+  }
+  .quote-band cite{
+    display:block; margin-top: 22px; text-align:center;
+    font-style:normal; font-size: 14px; color: var(--mist-dim); font-weight:600;
+  }
+
+  /* ---------- CTA ---------- */
+  .cta-band{
+    background: linear-gradient(155deg, var(--night-2), var(--night));
+    border: 1px solid var(--hair);
+    border-radius: var(--radius-lg);
+    padding: 64px 56px;
+    display:grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items:center;
+    margin: 0 32px;
+    max-width: calc(var(--maxw) - 64px);
+    margin-left:auto; margin-right:auto;
+  }
+  .cta-band h2{ font-size: clamp(26px,3vw,36px); max-width: 14ch; }
+  .cta-form{
+    display:flex; gap:10px; flex-wrap:wrap;
+  }
+  .cta-form input{
+    flex:1; min-width:200px;
+    background: rgba(246,241,228,0.06);
+    border: 1px solid var(--hair);
+    border-radius: 100px;
+    padding: 14px 20px;
+    color: var(--ivory); font-family:'Manrope',sans-serif; font-size: 15px;
+  }
+  .cta-form input::placeholder{ color: var(--mist-dim); }
+  .cta-form input:focus{ outline:2px solid var(--marigold); outline-offset:2px; }
+  .cta-form-note{ font-size:13px; color: var(--mist-dim); margin-top:12px; }
+  .form-success{ display:none; color: var(--sage); font-weight:700; font-size:15px; }
+
+  /* ---------- FOOTER ---------- */
+  footer{ padding: 70px 0 40px; }
+  .foot-grid{
+    display:grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px;
+    padding-bottom: 46px; border-bottom: 1px solid var(--hair);
+  }
+  .foot-brand p{ color: var(--mist); font-size:14.5px; margin-top:14px; max-width:32ch; }
+  .foot-col h4{
+    font-size: 13px; color: var(--mist-dim); font-weight:700; margin-bottom:16px;
+  }
+  .foot-col ul{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:11px; }
+  .foot-col a{ text-decoration:none; color: var(--mist); font-size:14.5px; transition:color .18s ease; }
+  .foot-col a:hover{ color: var(--marigold); }
+  .foot-bottom{
+    display:flex; justify-content:space-between; align-items:center; padding-top: 28px;
+    font-size: 13px; color: var(--mist-dim); flex-wrap:wrap; gap:12px;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 880px){
+    .wrap{ padding: 0 22px; }
+    .navlinks{ display:none; }
+    .hero-grid{ grid-template-columns: 1fr; }
+    .route-card{ order:-1; }
+    .compare{ grid-template-columns: 1fr; }
+    .trust-grid{ grid-template-columns: 1fr 1fr; }
+    .coverage{ grid-template-columns: 1fr; }
+    .cta-band{ grid-template-columns: 1fr; padding: 44px 28px; margin: 0 16px; }
+    .foot-grid{ grid-template-columns: 1fr 1fr; }
+    section{ padding: 70px 0; }
+  }
+  @media (max-width: 520px){
+    .trust-grid{ grid-template-columns: 1fr; }
+    .foot-grid{ grid-template-columns: 1fr; gap: 30px; }
+    .strip .wrap{ flex-direction:column; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="#top" class="logo">Ghar<span class="dot">·</span>Jau</a>
+    <div class="navlinks">
+      <a href="#difference">Why it's different</a>
+      <a href="#how">How it works</a>
+      <a href="#trust">Safety</a>
+      <a href="#coverage">Where we drive</a>
+    </div>
+    <a href="#waitlist" class="btn btn-primary">Join the waitlist</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-glow"></div>
+  <div class="wrap hero-grid">
+    <div>
+      <span class="kicker">Launching first in Kathmandu Valley</span>
+      <h1 class="headline">Don't leave your car behind. <em>Bring it home too.</em></h1>
+      <p class="hero-sub">When you're not fit to drive, Ghar Jau sends a verified driver to your location who takes the wheel of your own car and drives you home — no taxi, no towing, no car left in Thamel overnight.</p>
+      <div class="hero-actions">
+        <a href="#waitlist" class="btn btn-primary">Get early access</a>
+        <a href="#how" class="btn btn-ghost">See how it works</a>
+      </div>
+      <p class="hero-note">Built for Kathmandu's nightlife, restaurants, hotels, and events — one ride request at a time.</p>
+    </div>
+
+    <div class="route-card">
+      <div class="cap">Tonight's route</div>
+      <div class="pair"><span>Thamel, Kathmandu</span><span>18 min away</span></div>
+      <svg class="route-svg" viewBox="0 0 340 300" fill="none">
+        <path class="route-path" d="M40 40 C 120 40, 60 120, 140 130 S 260 90, 220 180 S 120 230, 180 260 L 300 260" />
+        <circle cx="40" cy="40" r="7" fill="#F2A93B"/>
+        <circle cx="300" cy="260" r="7" fill="#6FA98A"/>
+        <circle cx="140" cy="130" r="3.5" fill="#F6F1E4" opacity="0.5"/>
+        <circle cx="220" cy="180" r="3.5" fill="#F6F1E4" opacity="0.5"/>
+        <text x="52" y="36" class="pin-label">Pickup</text>
+        <text x="52" y="52" class="pin-sub">Sam's Bar, Thamel</text>
+        <text x="240" y="256" class="pin-label">Home</text>
+        <text x="240" y="272" class="pin-sub">Baluwatar</text>
+      </svg>
+      <div class="badge-sage">Driver: Rajesh K. · verified · 4.9 rating</div>
+    </div>
+  </div>
+</header>
+
+<div class="strip">
+  <div class="wrap">
+    <div class="strip-item"><b>Your car.</b> Always with you, never left behind.</div>
+    <div class="strip-item"><b>Verified drivers.</b> Background-checked, licensed, rated.</div>
+    <div class="strip-item"><b>Live tracking.</b> Shareable with anyone you trust.</div>
+    <div class="strip-item"><b>Digital payment.</b> No cash needed at 1am.</div>
+  </div>
+</div>
+
+<section id="difference">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">Why it's different</span>
+      <h2>Ride-hailing solves getting home. It doesn't solve getting your car home.</h2>
+      <p>Most people who've had a few drinks in Kathmandu face the same choice: risk the drive, or leave the car and deal with it tomorrow. Ghar Jau removes that choice entirely.</p>
+    </div>
+    <div class="compare">
+      <div class="compare-card old">
+        <h3>A regular ride-hailing app</h3>
+        <ul class="compare-list">
+          <li><span class="mark">–</span> You leave your own car parked overnight</li>
+          <li><span class="mark">–</span> You arrange a separate trip to retrieve it</li>
+          <li><span class="mark">–</span> Risk of parking fines, towing, or theft</li>
+          <li><span class="mark">–</span> Two fares instead of one</li>
+        </ul>
+      </div>
+      <div class="compare-card new">
+        <h3>Ghar Jau</h3>
+        <ul class="compare-list">
+          <li><span class="mark">✓</span> A verified driver comes to you and drives your car</li>
+          <li><span class="mark">✓</span> You and your vehicle arrive home together</li>
+          <li><span class="mark">✓</span> Nothing left behind, nothing to retrieve tomorrow</li>
+          <li><span class="mark">✓</span> One trip, one fare, one less decision at 1am</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">How it works</span>
+      <h2>From last call to your driveway.</h2>
+      <p>Four steps, built for the moment you're actually least equipped to plan ahead.</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-step active">
+        <div class="tl-node">1</div>
+        <div class="tl-body">
+          <h3>Request a driver</h3>
+          <p>Open the app, drop your pin, and tell us where you're headed. Takes less time than waiting for the bill.</p>
+          <div class="tl-time">Under 60 seconds</div>
+        </div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-node">2</div>
+        <div class="tl-body">
+          <h3>A verified driver arrives — on foot or by bike</h3>
+          <p>Your matched driver reaches your location, ID and rating visible in-app before they arrive.</p>
+          <div class="tl-time">Typically 10–20 minutes in Kathmandu Valley</div>
+        </div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-node">3</div>
+        <div class="tl-body">
+          <h3>They drive your car — with you in it</h3>
+          <p>You hand over the keys, sit back, and your own vehicle takes you home. Live GPS tracking runs the whole way, shareable with a friend or family member.</p>
+          <div class="tl-time">Route + ETA visible throughout</div>
+        </div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-node">4</div>
+        <div class="tl-body">
+          <h3>Pay in-app, rate your driver</h3>
+          <p>No cash changes hands. Rate the trip so the next passenger knows exactly who's picking them up.</p>
+          <div class="tl-time">Automatic, in seconds</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="trust">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">Safety, by design</span>
+      <h2>Trust is the entire product.</h2>
+      <p>You're handing a stranger the keys to your car. Every part of Ghar Jau is built to make that feel obviously safe, not just claimed to be.</p>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-card">
+        <svg class="trust-icon" viewBox="0 0 40 40" fill="none"><path d="M20 4 34 10v9c0 10-6 15.5-14 17-8-1.5-14-7-14-17v-9L20 4Z" stroke="#F2A93B" stroke-width="1.6"/><path d="M14 20l4 4 8-8" stroke="#F2A93B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>Verified drivers only</h3>
+        <p>License checks, background verification, and in-person onboarding before anyone drives your car.</p>
+      </div>
+      <div class="trust-card">
+        <svg class="trust-icon" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="16" r="7" stroke="#F2A93B" stroke-width="1.6"/><path d="M20 23c-7 0-12 4-12 9v2h24v-2c0-5-5-9-12-9Z" stroke="#F2A93B" stroke-width="1.6"/><path d="M27 10l3 3 5-6" stroke="#6FA98A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>Ratings both ways</h3>
+        <p>Drivers rate passengers, passengers rate drivers. A track record before you ever meet.</p>
+      </div>
+      <div class="trust-card">
+        <svg class="trust-icon" viewBox="0 0 40 40" fill="none"><path d="M20 4v32M8 20h24" stroke="#F2A93B" stroke-width="1.6"/><circle cx="20" cy="20" r="15" stroke="#F2A93B" stroke-width="1.6"/><circle cx="20" cy="20" r="3.2" fill="#F2A93B"/></svg>
+        <h3>Live GPS tracking</h3>
+        <p>Every trip is tracked start to finish. Share your route in real time with someone you trust.</p>
+      </div>
+      <div class="trust-card">
+        <svg class="trust-icon" viewBox="0 0 40 40" fill="none"><rect x="6" y="12" width="28" height="18" rx="3" stroke="#F2A93B" stroke-width="1.6"/><path d="M6 18h28" stroke="#F2A93B" stroke-width="1.6"/><path d="M11 24h8" stroke="#6FA98A" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <h3>Cashless payment</h3>
+        <p>Pay by card or wallet in the app. No cash, no awkward fare negotiation late at night.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="coverage">
+  <div class="wrap coverage">
+    <div>
+      <span class="tag">Where we drive</span>
+      <h2 style="font-size: clamp(26px,3vw,36px); margin-bottom:16px;">Starting where Kathmandu doesn't sleep.</h2>
+      <p style="color:var(--mist); font-size:17px;">We're launching around the venues, hotels, and events where people already need a safe way to get their car home — then expanding into an everyday personal driver service for anyone, anytime.</p>
+      <div class="coverage-tags">
+        <span class="ctag">Thamel</span>
+        <span class="ctag">Lazimpat</span>
+        <span class="ctag">Jhamsikhel</span>
+        <span class="ctag">Durbar Marg</span>
+        <span class="ctag">Boudha events</span>
+        <span class="ctag">Hotel partners</span>
+        <span class="ctag">Wedding venues</span>
+      </div>
+    </div>
+    <div class="map-card">
+      <svg width="100%" height="320" viewBox="0 0 400 320">
+        <path d="M20 260 C 100 200, 60 120, 160 100 S 320 60, 340 30" stroke="rgba(246,241,228,0.14)" stroke-width="1.5" fill="none"/>
+        <path d="M20 60 C 80 90, 140 40, 220 80 S 320 200, 360 260" stroke="rgba(246,241,228,0.14)" stroke-width="1.5" fill="none"/>
+      </svg>
+      <div class="map-pin" style="top:38px; left:80px;"><div class="pt"></div><span>Thamel</span></div>
+      <div class="map-pin" style="top:120px; left:210px;"><div class="pt"></div><span>Lazimpat</span></div>
+      <div class="map-pin" style="top:70px; left:290px;"><div class="pt"></div><span>Durbar Marg</span></div>
+      <div class="map-pin" style="top:220px; left:130px;"><div class="pt"></div><span>Jhamsikhel</span></div>
+      <div class="map-pin" style="top:250px; left:270px;"><div class="pt"></div><span>Boudha</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="quote-band">
+  <div class="wrap">
+    <blockquote>"Timro gaadi, hamro driver — hamile timilai gharसम्म पुर्‍याउँछौं." Your car, our driver — we get you all the way home.</blockquote>
+    <cite>The idea behind the name Ghar Jau</cite>
+  </div>
+</div>
+
+<section id="waitlist">
+  <div class="cta-band wrap">
+    <div>
+      <h2>Be first to ride when we launch in Kathmandu.</h2>
+      <p style="color:var(--mist); margin-top:14px; font-size:15.5px;">Early sign-ups get priority access and founding-member pricing.</p>
+    </div>
+    <div>
+      <form class="cta-form" onsubmit="event.preventDefault(); this.querySelector('button').style.display='none'; this.querySelector('input').style.display='none'; this.nextElementSibling.style.display='block';">
+        <input type="tel" placeholder="Your phone number" required>
+        <button type="submit" class="btn btn-primary">Notify me</button>
+      </form>
+      <p class="form-success">You're on the list — dhanyabad!</p>
+      <p class="cta-form-note">No spam. Just a message when we're live in your neighbourhood.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="#top" class="logo">Ghar<span class="dot">·</span>Jau</a>
+        <p>An on-demand designated driver service for Nepal. Your car, driven home, with you in it.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#trust">Safety</a></li>
+          <li><a href="#coverage">Coverage area</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Drivers</h4>
+        <ul>
+          <li><a href="#">Become a driver</a></li>
+          <li><a href="#">Verification process</a></li>
+          <li><a href="#">Earnings</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Partner with us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Ghar Jau. Kathmandu Valley, Nepal.</span>
+      <span>Made for the ride home.</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

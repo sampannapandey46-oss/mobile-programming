@@ -14,7 +14,7 @@ function checkResult() {
 
     let result = document.getElementById("result");
 
-    if (total > 600) {
+    if (total >= 600) {
         result.innerHTML = "Distinction";
         result.style.color = "green";
     }

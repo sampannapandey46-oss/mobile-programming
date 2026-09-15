@@ -1,0 +1,62 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: lightgray;
+    text-align: center;
+}
+
+.card {
+    background-color: white;
+    width: 300px;
+    margin: 100px auto;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px gray;
+}
+
+.card h1 {
+    color: blue;
+}
+
+.card h2 {
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: gray;
+}
+
+button {
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: darkblue;
+}
+
+#qrBox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.qr-card {
+    background-color: white;
+    width: 300px;
+    padding: 30px;
+    margin: 100px auto;
+    border-radius: 15px;
+}
+
+#qrcode {
+    margin: 20px auto;
+    width: 128px;
+}
